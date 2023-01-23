@@ -1,6 +1,6 @@
 # Preferential Bayesian Optimizer
 
-Customized C++ PBO version based on [Sequential-Line-Search](https://github.com/yuki-koyama/sequential-line-search).
+Customized C++ PBO version based on [Sequential-Line-Search](https://github.com/yuki-koyama/sequential-line-search). Yuki Koyama (<yuki@koyama.xyz>) is the original author.
 
 ## How to Compile and Run (C++)
 
@@ -61,10 +61,4 @@ std::string strPathCSVFile = "../../../csv/Corridor_Scenario.csv";
 
 MIT License.
 
-## Contributing
 
-Issue reports, suggestions, requests, and PRs are highly welcomed.
-
-## Contact
-
-Yuki Koyama (<yuki@koyama.xyz>)
