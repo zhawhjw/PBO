@@ -19,19 +19,19 @@ sudo apt install cmake libeigen3-dev
 Use [cmake](https://cmake.org/) (3.3 or above) and then
 ```bash
 git clone https://github.com/zhawhjw/PBO.git
-cd sequential-line-search
+cd PBO
 mkdir build
 cd build
 cmake ../
 make
 ```
-Then you can run the applications by (there is a hard-coded relative path in main.c, so make sure you at the correct directory which is achieved by following commands),
+Stay at the 'build' directory, then you can run the applications by (there is a hard-coded relative path in main.c, so make sure you at the correct directory which is achieved by following commands),
 ```
 cd demos/sequential_line_search_nd/
 ./SequentialLineSearchNd
 ```
 
-This code only works on Ubuntu (maybe other Linux system) or Macos 
+The original code version only works on Linux based system or MacOS, so this version also only support these two platforms. 
 
 
 
