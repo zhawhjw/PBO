@@ -2,11 +2,23 @@
 
 Customized C++ PBO version based on [Sequential-Line-Search](https://github.com/yuki-koyama/sequential-line-search). Yuki Koyama (<yuki@koyama.xyz>) is the original author.
 
+### Prerequisites
+
+macOS
+```
+brew install cmake eigen
+```
+
+Ubuntu 16.04/18.04
+```
+sudo apt install cmake libeigen3-dev
+```
+
 ## How to Compile and Run (C++)
 
 Use [cmake](https://cmake.org/) (3.3 or above) and then
 ```bash
-git clone https://github.com/yuki-koyama/sequential-line-search.git --recursive
+git clone https://github.com/zhawhjw/PBO.git
 cd sequential-line-search
 mkdir build
 cd build
@@ -21,17 +33,7 @@ cd demos/sequential_line_search_nd/
 
 This code only works on Ubuntu (maybe other Linux system) or Macos 
 
-### Prerequisites
 
-macOS
-```
-brew install cmake eigen
-```
-
-Ubuntu 16.04/18.04
-```
-sudo apt install cmake libeigen3-dev
-```
 
 ### Data
 The data is placed at folder "csv". Each row represents one parameter combination.
