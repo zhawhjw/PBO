@@ -4,18 +4,22 @@ Customized C++ PBO version based on [Sequential-Line-Search](https://github.com/
 
 ### Prerequisites
 
-macOS
+#### MacOS
 ```
 brew install cmake eigen
 ```
 
-Ubuntu 16.04/18.04
+#### Linux
 ```
 sudo apt install cmake libeigen3-dev
 ```
 
+#### Windows 10
+Install visual studio 2019 (other versions are not tested) with the MSVC c++ compiler
+
 ## How to Compile and Run (C++)
 
+#### MacOS or Linux
 Use [cmake](https://cmake.org/) (3.3 or above) and then
 ```bash
 git clone https://github.com/zhawhjw/PBO.git
@@ -30,9 +34,9 @@ Stay at the 'build' directory, then you can run the applications by (there is a 
 cd demos/sequential_line_search_nd/
 ./SequentialLineSearchNd
 ```
-
-The original code version only works on Linux based system or MacOS, so this version also only support these two platforms. 
-
+#### Windows 10
+The original code version only works on Linux based system or MacOS. If your platform is Windows 10, use VS2019 directly open this projet file and you should see there is a dropdown bar to "Select Startup Item" along with the Debug bar at the top of the VS2019 editor. 
+Select the option named "SequentialLineSearchNd.exe" and press it to run.
 
 
 ### Data
