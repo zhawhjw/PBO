@@ -19,12 +19,37 @@ option(MATHTOOLBOX_PYTHON_BINDINGS "Build python bindings"      OFF)
 # Prerequisites
 ######################################################################
 
-find_package(Eigen3 REQUIRED)
+IF (WIN32)
+	# message("${EIGEN3_INCLUDE_DIR}")
+	# You have to set these variables as Windows environment variables:
+    # EIGEN3_INCLUDE_DIR <- %EIGEN3_ROOT%
+    # EIGEN3_DIR <- %EIGEN3_ROOT%\cmake
+    #
+    # EIGEN3_INCLUDE_DIR: variable needed for file %EIGEN3_ROOT%/cmake/FindEigen3.cmake
+    #
+    # CMAKE_MODULE_PATH: Search path for the module Eigen3 to be loaded by find_package
+    #
+    SET( EIGEN3_ROOT "../../eigen-3.4.0" )
+    SET( EIGEN3_DIR "${EIGEN3_ROOT}/cmake" )
+    SET( EIGEN3_INCLUDE_DIR "${EIGEN3_ROOT}" )
+    SET( CMAKE_MODULE_PATH EIGEN3_DIR )
+
+    # find_package( Eigen3 3.4.0 REQUIRED )
+    # include_directories is needed for the compiler to know where looking for Eigen3 header files to be included
+    include_directories( ${EIGEN3_INCLUDE_DIR} )
+
+
+ELSE()
+    find_package(Eigen3 REQUIRED)
+    
+ENDIF()
+
 if((NOT TARGET Eigen3::Eigen) AND (DEFINED EIGEN3_INCLUDE_DIR))
-  add_library(AliasEigen3 INTERFACE)
-  target_include_directories(AliasEigen3 INTERFACE ${EIGEN3_INCLUDE_DIR})
-  add_library(Eigen3::Eigen ALIAS AliasEigen3)
+    add_library(AliasEigen3 INTERFACE)
+    target_include_directories(AliasEigen3 INTERFACE ${EIGEN3_INCLUDE_DIR})
+    add_library(Eigen3::Eigen ALIAS AliasEigen3)
 endif()
+
 
 ######################################################################
 # External libraries
