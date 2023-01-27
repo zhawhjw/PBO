@@ -175,7 +175,7 @@ int main(int argc, char* argv[]){
     strPathCSVFile = "../../../../../csv/"+ scenario +".csv";
 #endif
 
-    std::cout << strPathCSVFile << std::endl;
+    std::cout << "The parameters in scenario *" + scenario + "* is chosen to be evaluated." << std::endl;
 
     csvFile.open(strPathCSVFile.c_str());
 
