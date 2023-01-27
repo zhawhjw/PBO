@@ -15,7 +15,8 @@ sudo apt install cmake libeigen3-dev
 ```
 
 #### Windows 10
-Install visual studio 2019 (other versions are not tested) with the MSVC c++ compiler
+Install visual studio 2019 (other versions are not tested) with the MSVC c++ compiler.
+The 'eigen-3.4.0' folder is used for Windows 10 only for build convenience.
 
 ## How to Compile and Run (C++)
 
