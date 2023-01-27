@@ -33,12 +33,28 @@ make
 Stay at the 'build' directory, then you can run the applications by (there is a hard-coded relative path in main.c, so make sure you at the correct directory which is achieved by following commands),
 ```
 cd demos/sequential_line_search_nd/
-./SequentialLineSearchNd
+./SequentialLineSearchNd CSV_SCENARIO_NAME_WITHOUT_SUFFIX
 ```
 #### Windows 10
-The original code version only works on Linux based system or MacOS. If your platform is Windows 10, use VS2019 directly open this projet file and you should see there is a dropdown bar to "Select Startup Item" along with the Debug bar at the top of the VS2019 editor. 
-Select the option named "SequentialLineSearchNd.exe" and press it to run.
+Use Microsoft Visual Studio 2019 to open the project folder, the MS should automatically build the project and generate the "out" folder in project folder.
+Navigate to the location of built object file
+```
+cd out/build/your-debugger (usually it is x64-Debug)/demos/sequential_line_search_nd
+./SequentialLineSearchNd.exe CSV_SCENARIO_NAME_WITHOUT_SUFFIX
+```
 
+#### CSV_SCENARIO_NAME_WITHOUT_SUFFIX
+A parameter passed to built object file. The default value is 
+```
+Corridor_Scenario
+```
+Or you can choose to type any of below ones:
+
+```
+Corridor_Scenario
+Hallway_Scenario
+Quad_Scenario
+```
 
 ### Data
 The data is placed at folder "csv". Each row represents one parameter combination.
