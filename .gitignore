@@ -3,3 +3,5 @@ out/
 .idea/
 .vs/
 build/
+
+csv/all_Scenarios_together.csv
