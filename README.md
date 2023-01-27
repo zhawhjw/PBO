@@ -70,15 +70,20 @@ vector<int> fifth = {11, 12, 13};
 vector<int> sixth = {14, 15};
 ```
 
-### Source Code
+[//]: # (### Source Code)
 
-The main source code at directory "demos/sequential_line_search_nd/main.c"
+[//]: # ()
+[//]: # (The main source code at directory "demos/sequential_line_search_nd/main.c")
 
-Line 154 of "main.c" contains the path to different scenario
+[//]: # ()
+[//]: # (Line 154 of "main.c" contains the path to different scenario)
 
-```
-std::string strPathCSVFile = "../../../csv/Corridor_Scenario.csv";
-```
+[//]: # ()
+[//]: # (```)
+
+[//]: # (std::string strPathCSVFile = "../../../csv/Corridor_Scenario.csv";)
+
+[//]: # (```)
 
 ## License
 
