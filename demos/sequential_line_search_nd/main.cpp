@@ -119,6 +119,8 @@ void Core::proceedOptimization(vector<vector<double>> t, vector<vector<int>> p, 
     // Update internal data according to the new preference model
     const auto data_points     = m_optimizer->GetRawDataPoints();
     cout << data_points << endl;
+    cout << "\n" << endl;
+
 
     const int  num_data_points = data_points.cols();
 
@@ -134,7 +136,9 @@ void Core::proceedOptimization(vector<vector<double>> t, vector<vector<int>> p, 
     int best_index;
     m_y_max = m_y.maxCoeff(&best_index);
     cout << "Best Index = " << best_index << endl;
-    cout << "All Y values = " << m_y << endl;
+    cout << "\n" << endl;
+    cout << "All Scores = \n" << m_y << endl;
+    cout << "\n" << endl;
 
 
     m_x_max = data_points.col(best_index);
@@ -150,10 +154,25 @@ double Core::evaluateObjectiveFunction(const Eigen::VectorXd& x) const
 
 int main(int argc, char* argv[]){
 
+    std::string scenario;
+    int trials = 1;
+
+    if (argc == 1){
+        scenario = "Corridor_Scenario";
+    } else if (argc == 2){
+        scenario = argv[1];
+    } else{
+        scenario = argv[1];
+    }
+
+
+
+
+
     std::ifstream csvFile;
-    std::string strPathCSVFile = "../../../csv/Corridor_Scenario.csv";
+    std::string strPathCSVFile = "../../../csv/"+ scenario +".csv";
 #ifdef _WIN32
-    strPathCSVFile = "../../../../../csv/Corridor_Scenario.csv";
+    strPathCSVFile = "../../../../../csv/"+ scenario +".csv";
 #endif
 
     std::cout << strPathCSVFile << std::endl;
@@ -239,15 +258,10 @@ int main(int argc, char* argv[]){
 
     Core& core = Core::getInstance();
     core.reset();
-    constexpr unsigned n_iterations = 6;
+    unsigned n_iterations = (unsigned)pairs.size();
 
-//    std::vector<VectorXd> xx = std::vector<VectorXd>{VectorXd::Constant(6, 0.4), VectorXd::Constant(6, 0.6)};
-//    std::cout << xx[0].size() << std::endl;
-    //    for (VectorXd content: xx)
-//
-//        std::cout << content << std::endl;
 
-    int trials = 1;
+
     for (int t =0 ; t< trials; t++){
 
                 std::cout << "========================" << std::endl;
@@ -256,13 +270,18 @@ int main(int argc, char* argv[]){
 
         for (unsigned i = 0; i < n_iterations; ++i)
         {
+            std::cout << "-------------All Combinations Candidates---------" << std::endl;
+
             core.proceedOptimization(total, pairs, i);
 
             std::vector<Eigen::VectorXd> tt = core.m_optimizer->GetCurrentOptions();
-            std::cout << "m_x_max = " << core.m_x_max << std::endl;
-            std::cout << "m_y_max = " << setprecision(12) << core.m_y_max << std::endl;
-            std::cout << "---------------------------------------------" << std::endl;
 
+
+            std::cout << "The current best hyper parameter combination is: \n" << core.m_x_max << std::endl;
+            std::cout << "\n" << std::endl;
+
+            std::cout << "The score for current best hyper parameter combination is: \n" << setprecision(12) << core.m_y_max << std::endl;
+            std::cout << "\n" << std::endl;
 
 
         }
