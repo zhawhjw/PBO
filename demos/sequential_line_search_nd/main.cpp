@@ -152,6 +152,10 @@ int main(int argc, char* argv[]){
 
     std::ifstream csvFile;
     std::string strPathCSVFile = "../../../csv/Corridor_Scenario.csv";
+#ifdef _WIN32
+    strPathCSVFile = "../../../../../csv/Corridor_Scenario.csv";
+#endif
+
     std::cout << strPathCSVFile << std::endl;
 
     csvFile.open(strPathCSVFile.c_str());
