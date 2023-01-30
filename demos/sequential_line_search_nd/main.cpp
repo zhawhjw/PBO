@@ -152,30 +152,52 @@ double Core::evaluateObjectiveFunction(const Eigen::VectorXd& x) const
     return 1.0 - 1.5 * x(0) * std::sin(x(0) * 13.0);
 }
 
-int main(int argc, char* argv[]){
+std::string parameter(int argc, char* argv[]){
 
     std::string scenario;
-    int trials = 1;
 
     if (argc == 1){
-        scenario = "Corridor_Scenario";
-    } else if (argc == 2){
-        scenario = argv[1];
+
+        scenario = "../../../csv/Corridor_Scenario.csv";
+#ifdef _WIN32
+        scenario = "../../../../../csv/Corridor_Scenario.csv";
+#endif
+
+    } else if (argc > 2){
+
+        std::string csv_arg = argv[1];
+
+        if (!csv_arg.compare("--csv")){
+
+            scenario = argv[2];
+
+        } else{
+            std::cout << "Please use '--csv' to specify the absolute csv file path.\n" << std::endl;
+            exit( 1 );
+        }
+
+
+
     } else{
-        scenario = argv[1];
+        std::cout << "NO Parameter!\n" << std::endl;
+        exit( 1 );
+
     }
 
 
+    return scenario;
+
+}
+
+int main(int argc, char* argv[]){
 
 
+    int trials = 1;
 
     std::ifstream csvFile;
-    std::string strPathCSVFile = "../../../csv/"+ scenario +".csv";
-#ifdef _WIN32
-    strPathCSVFile = "../../../../../csv/"+ scenario +".csv";
-#endif
+    std::string strPathCSVFile = parameter(argc, argv);
 
-    std::cout << "The parameters in scenario *" + scenario + "* is chosen to be evaluated." << std::endl;
+    std::cout << "The parameters in scenario:\n" << strPathCSVFile << "\n is chosen to be evaluated." << std::endl;
 
     csvFile.open(strPathCSVFile.c_str());
 
