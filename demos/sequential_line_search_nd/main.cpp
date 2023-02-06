@@ -4,7 +4,7 @@
 #include <limits>
 #include <mathtoolbox/data-normalization.hpp>
 #include <sequential-line-search/preferential-bayesian-optimizer.hpp>
-
+#include<bits/stdc++.h>
 //#include <iostream>
 //#include <sequential-line-search/sequential-line-search.hpp>
 //#include <sequential-line-search/utils.hpp>
@@ -20,10 +20,74 @@ using namespace sequential_line_search;
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
 
+vector<vector<int>> breakdowns;
+
+void combinationUtil(int arr[], int data[],
+                     int start, int end,
+                     int index, int r);
+
+// The main function that prints
+// all combinations of size r
+// in arr[] of size n. This function
+// mainly uses combinationUtil()
+void printCombination(int arr[], int n, int r)
+{
+    // A temporary array to store
+    // all combination one by one
+    int data[r];
+
+    // Print all combination using
+    // temporary array 'data[]'
+    combinationUtil(arr, data, 0, n-1, 0, r);
+}
+
+/* arr[] ---> Input Array
+data[] ---> Temporary array to
+store current combination
+start & end ---> Starting and
+Ending indexes in arr[]
+index ---> Current index in data[]
+r ---> Size of a combination to be printed */
+void combinationUtil(int arr[], int data[],
+                     int start, int end,
+                     int index, int r)
+{
+    // Current combination is ready
+    // to be printed, print it
+    if (index == r)
+    {
+        vector<int> bd;
+        for (int j = 0; j < r; j++){
+            cout << data[j] << " ";
+            bd.push_back(data[j]);
+        }
+
+        breakdowns.push_back(bd);
+
+        cout << endl;
+        return;
+    }
+
+    // replace index with all possible
+    // elements. The condition "end-i+1 >= r-index"
+    // makes sure that including one element
+    // at index will make a combination with
+    // remaining elements at remaining positions
+    for (int i = start; i <= end &&
+                        end - i + 1 >= r - index; i++)
+    {
+        data[index] = arr[i];
+        combinationUtil(arr, data, i+1,
+                        end, index+1, r);
+    }
+}
+
 Core::Core()
 {
     reset();
 }
+
+
 
 void Core::reset()
 {
@@ -59,6 +123,119 @@ void Core::reset()
 
     m_x_max = VectorXd::Zero(6);
     m_y_max = NAN;
+}
+
+void Core::proceedOptimizationWithPairs(vector<vector<double>> t, vector<vector<int>> p, int iteration){
+    vector<double> PBD_On_1_Off_0 = t[0];
+    vector<double> alpha = t[1];
+    vector<double> w_smooth_acceleration = t[2];
+    vector<double> w_col = t[3];
+    vector<double> w_comfort = t[4];
+    vector<double> Cheby_1_Or_Euclidean_2 = t[5];
+    vector<double> liked = t[6];
+
+    vector<int> cp = p[iteration];
+
+    VectorXd best;
+    vector<VectorXd> others;
+    others.clear();
+
+    breakdowns.clear();
+    int arr[cp.size()];
+    std::copy(cp.begin(), cp.end(), arr);
+    int r = 2;
+    int n = sizeof(arr)/sizeof(arr[0]);
+    printCombination(arr, n, r);
+
+    if (cp.size()>2){
+
+        for (auto & breakdown : breakdowns){
+
+            int best_option_index = -1;
+            double max = 0.0;
+            for (int index : breakdown){
+
+                if(liked[index] > max){
+                    max = liked[index] ;
+                    best_option_index = index;
+                }
+            }
+
+            for (int index : breakdown){
+
+                VectorXd content(6);
+                content << PBD_On_1_Off_0[index], alpha[index], w_smooth_acceleration[index], w_col[index], w_comfort[index], Cheby_1_Or_Euclidean_2[index];
+
+                if(index == best_option_index){
+                    best = content;
+                }
+                else{
+                    others.push_back(content);
+                }
+            }
+
+        }
+
+    } else{
+        int best_option_index = -1;
+
+        double max = 0.0;
+        for (int index : cp){
+
+            if(liked[index] > max){
+                max = liked[index] ;
+                best_option_index = index;
+            }
+        }
+
+        for (int index : cp){
+
+            VectorXd content(6);
+            content << PBD_On_1_Off_0[index], alpha[index], w_smooth_acceleration[index], w_col[index], w_comfort[index], Cheby_1_Or_Euclidean_2[index];
+
+            if(index == best_option_index){
+                best = content;
+            }
+            else{
+                others.push_back(content);
+            }
+        }
+    }
+
+
+
+
+    m_optimizer->SubmitCustomFeedbackData(best, others);
+
+    // Update internal data according to the new preference model
+    const auto data_points     = m_optimizer->GetRawDataPoints();
+    cout << data_points << endl;
+    cout << "\n" << endl;
+
+
+    const int  num_data_points = data_points.cols();
+
+    VectorXd f(num_data_points);
+    for (int i = 0; i < num_data_points; ++i)
+    {
+        f(i) = m_optimizer->GetPreferenceValueMean(data_points.col(i));
+    }
+
+    m_normalizer = std::make_shared<mathtoolbox::DataNormalizer>(f.transpose());
+    m_y          = VectorXd::Constant(f.size(), 1.0) + m_normalizer->GetNormalizedDataPoints().transpose();
+
+    int best_index;
+    m_y_max = m_y.maxCoeff(&best_index);
+    cout << "Best Index = " << best_index << endl;
+    cout << "\n" << endl;
+    cout << "All Scores = \n" << m_y << endl;
+    cout << "\n" << endl;
+
+
+    m_x_max = data_points.col(best_index);
+
+    // Determine the next pairwise comparison query
+    m_optimizer->DetermineNextQuery();
 }
 
 void Core::proceedOptimization(vector<vector<double>> t, vector<vector<int>> p, int iteration)
@@ -294,7 +471,9 @@ int main(int argc, char* argv[]){
         {
             std::cout << "-------------All Combinations Candidates---------" << std::endl;
 
-            core.proceedOptimization(total, pairs, i);
+//            core.proceedOptimization(total, pairs, i);
+            core.proceedOptimizationWithPairs(total, pairs, i);
+
 
             std::vector<Eigen::VectorXd> tt = core.m_optimizer->GetCurrentOptions();
 

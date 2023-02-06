@@ -33,27 +33,27 @@ make
 Stay at the 'build' directory, then you can run the applications by (there is a hard-coded relative path in main.c, so make sure you at the correct directory which is achieved by following commands),
 ```
 cd demos/sequential_line_search_nd/
-./SequentialLineSearchNd CSV_SCENARIO_NAME_WITHOUT_SUFFIX
+./SequentialLineSearchNd --csv ABSOLUTE_PATH_TO_CSV
 ```
 #### Windows 10
 Use Microsoft Visual Studio 2019 to open the project folder, the MS should automatically build the project and generate the "out" folder in project folder.
 Navigate to the location of built object file
 ```
 cd out/build/your-debugger (usually it is x64-Debug)/demos/sequential_line_search_nd
-./SequentialLineSearchNd.exe CSV_SCENARIO_NAME_WITHOUT_SUFFIX
+./SequentialLineSearchNd.exe --csv ABSOLUTE_PATH_TO_CSV
 ```
 
-#### CSV_SCENARIO_NAME_WITHOUT_SUFFIX
+#### --csv ABSOLUTE_PATH_TO_CSV
 A parameter passed to built object file. The default value is 
 ```
-Corridor_Scenario
+ABSOLUTE_PATH_TO_CSV = PATH/Corridor_Scenario.csv
 ```
 Or you can choose to type any of below ones:
 
 ```
-Corridor_Scenario
-Hallway_Scenario
-Quad_Scenario
+PATH/Corridor_Scenario.csv
+PATH/Hallway_Scenario.csv
+PATH/Quad_Scenario.csv
 ```
 
 ### Data

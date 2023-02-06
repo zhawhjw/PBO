@@ -39,6 +39,7 @@ public:
     // For optimization
     void            proceedOptimization();
     void            proceedOptimization(vector<vector<double>> total, vector<vector<int>> pairs, int iteration);
+    void            proceedOptimizationWithPairs(vector<vector<double>> total, vector<vector<int>> pairs, int iteration);
     Eigen::VectorXd m_x_max;
     double          m_y_max;
 };
