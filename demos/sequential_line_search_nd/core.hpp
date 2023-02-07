@@ -42,6 +42,9 @@ public:
     void            proceedOptimizationWithPairs(vector<vector<double>> total, vector<vector<int>> pairs, int iteration);
     Eigen::VectorXd m_x_max;
     double          m_y_max;
+
+    void performSearch();
+    void performSearch(Eigen::VectorXd best, vector<Eigen::VectorXd> others);
 };
 
 #endif // CORE_H

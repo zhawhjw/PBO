@@ -58,13 +58,13 @@ void combinationUtil(int arr[], int data[],
     {
         vector<int> bd;
         for (int j = 0; j < r; j++){
-            cout << data[j] << " ";
+//            cout << data[j] << " ";
             bd.push_back(data[j]);
         }
 
         breakdowns.push_back(bd);
 
-        cout << endl;
+//        cout << endl;
         return;
     }
 
@@ -134,6 +134,8 @@ void Core::proceedOptimizationWithPairs(vector<vector<double>> t, vector<vector<
     vector<double> Cheby_1_Or_Euclidean_2 = t[5];
     vector<double> liked = t[6];
 
+    double threshold = 0.1;
+
     vector<int> cp = p[iteration];
 
     VectorXd best;
@@ -147,17 +149,25 @@ void Core::proceedOptimizationWithPairs(vector<vector<double>> t, vector<vector<
     int n = sizeof(arr)/sizeof(arr[0]);
     printCombination(arr, n, r);
 
+
+
+
     if (cp.size()>2){
 
         for (auto & breakdown : breakdowns){
+
+            int first = breakdown[0];
+            int second = breakdown[1];
 
             int best_option_index = -1;
             double max = 0.0;
             for (int index : breakdown){
 
                 if(liked[index] > max){
+
                     max = liked[index] ;
                     best_option_index = index;
+
                 }
             }
 
@@ -172,12 +182,22 @@ void Core::proceedOptimizationWithPairs(vector<vector<double>> t, vector<vector<
                 else{
                     others.push_back(content);
                 }
+
             }
 
+            if (abs(liked[first] - liked[second]) <threshold ){
+                cout << "Preference on Index " << first << " and Index" << second << " are too close. Discard." << endl;
+                cout << "\n" << endl;
+                continue;
+            }
+
+            performSearch(best, others);
         }
 
     } else{
         int best_option_index = -1;
+        int first = cp[0];
+        int second = cp[1];
 
         double max = 0.0;
         for (int index : cp){
@@ -199,12 +219,25 @@ void Core::proceedOptimizationWithPairs(vector<vector<double>> t, vector<vector<
             else{
                 others.push_back(content);
             }
+
         }
+
+        if (abs(liked[first] - liked[second]) <threshold ){
+            cout << "Preference on Index " << first << " and Index " << second << " are too close. Discard." << endl;
+            cout << "\n" << endl;
+            return;
+        }
+        performSearch(best, others);
+
     }
 
 
 
 
+
+}
+
+void Core::performSearch(VectorXd best, vector<VectorXd> others){
     m_optimizer->SubmitCustomFeedbackData(best, others);
 
     // Update internal data according to the new preference model
